@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KNews · 今日新聞</title>
+  <style>
+    :root { color-scheme: light; --ink: #172b37; --muted: #667985; --line: #dce5e8; --accent: #13756d; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #f5f7f7; color: var(--ink); font: 16px/1.7 system-ui, sans-serif; }
+    .wrap { max-width: 1040px; margin: auto; padding: 28px 24px; }
+    header { background: white; border-bottom: 1px solid var(--line); }
+    .brand { font-weight: 800; letter-spacing: -.04em; font-size: 28px; }
+    .brand span { color: var(--accent); }
+    .edition { color: var(--muted); font-size: 14px; }
+    h1 { font-size: clamp(28px, 5vw, 44px); line-height: 1.3; margin: 12px 0; }
+    .lead { color: var(--muted); margin: 0 0 24px; }
+    .notice { background: #fff6dd; border: 1px solid #e9d79f; border-radius: 12px; padding: 12px 18px; margin-bottom: 24px; }
+    .toolbar { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; }
+    input { min-width: 200px; flex: 1; border: 1px solid var(--line); border-radius: 10px; padding: 12px; font: inherit; background: white; }
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; }
+    button { border: 1px solid var(--line); background: white; border-radius: 24px; padding: 8px 16px; font: inherit; cursor: pointer; }
+    button[aria-pressed="true"] { background: var(--accent); color: white; border-color: var(--accent); }
+    :focus-visible { outline: 3px solid #dc9b22; outline-offset: 3px; }
+    #count { color: var(--muted); font-size: 14px; margin-bottom: 16px; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    article { background: white; border: 1px solid var(--line); border-radius: 14px; padding: 22px; display: flex; flex-direction: column; }
+    .meta { display: flex; flex-wrap: wrap; gap: 10px; color: var(--muted); font-size: 13px; }
+    .tag { color: var(--accent); font-weight: 700; }
+    h2 { font-size: 21px; line-height: 1.5; margin: 12px 0; }
+    article p { color: var(--muted); margin: 0 0 18px; }
+    a { color: var(--accent); text-underline-offset: 4px; }
+    article a { margin-top: auto; font-weight: 600; }
+    .brief { color: var(--ink); }
+    details { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 12px; }
+    summary { cursor: pointer; color: var(--accent); font-weight: 600; }
+    details ol { padding-left: 24px; margin-bottom: 0; }
+    details li { margin-bottom: 14px; overflow-wrap: anywhere; }
+    details a { font-weight: 400; }
+    #empty { background: white; border-radius: 12px; padding: 24px; text-align: center; }
+    [hidden] { display: none !important; }
+    footer { color: var(--muted); font-size: 13px; margin-top: 32px; border-top: 1px solid var(--line); padding-top: 16px; }
+    @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } .wrap { padding: 20px 16px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="brand">K<span>News</span></div>
+      <div class="edition">KNews2 今日新聞</div>
+    </div>
+  </header>
+  <main class="wrap">
+    <h1>少一點雜訊，多一點重點。</h1>
+    <p class="lead">依分類瀏覽新聞，從來源連結繼續閱讀。</p>
+    <aside class="notice">收錄 2026/11/22 台北時間截至 03:25 已收集的 115 篇報導，共 78 個新聞群組；此頁為靜態快照，並非即時新聞。僅顯示標題及原文連結。</aside>
+    <section aria-label="搜尋與分類">
+      <div class="toolbar">
+        <input id="search" type="search" aria-label="搜尋新聞" placeholder="搜尋標題或來源…">
+        <div class="filters" aria-label="新聞分類"><button type="button" data-category="全部" aria-pressed="true">全部</button>
+<button type="button" data-category="政治" aria-pressed="false">政治</button>
+<button type="button" data-category="財經" aria-pressed="false">財經</button>
+<button type="button" data-category="體育" aria-pressed="false">體育</button>
+<button type="button" data-category="國際" aria-pressed="false">國際</button>
+<button type="button" data-category="生活" aria-pressed="false">生活</button>
+<button type="button" data-category="社會" aria-pressed="false">社會</button>
+<button type="button" data-category="娛樂" aria-pressed="false">娛樂</button>
+<button type="button" data-category="科技" aria-pressed="false">科技</button>
+<button type="button" data-category="其他" aria-pressed="false">其他</button></div>
+      </div>
+      <div id="count" role="status" aria-live="polite">顯示 78 則新聞</div>
+    </section>
+    <section class="grid" aria-label="新聞列表">
+      <article data-category="政治">
+        <div class="meta"><span class="tag">01 · 政治</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>民進黨台中造勢，候選人合體拉票</h2>
+        <p>評分 7.39 · 14 篇今日報導 · 3 個來源</p>
+        <a href="https://www.ettoday.net/news/20261121/3276233.htm" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>14 篇今日報導 · 展開列表</summary><ol><li><a href="https://www.ettoday.net/news/20261121/3276233.htm" target="_blank" rel="noopener noreferrer">再嗆賴清德「我不會屈服」 柯文哲：不能選了還是會繼續努力</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li><li><a href="https://www.ettoday.net/news/20261121/3276228.htm" target="_blank" rel="noopener noreferrer">回防本命區！蕭美琴站台 陳素月霸氣承諾：65歲以上免健保費必推</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li><li><a href="https://www.ettoday.net/news/20261121/3276240.htm" target="_blank" rel="noopener noreferrer">心疼柯文哲遭逢委屈 蔣萬安登民眾黨造勢：用選票拒絕政治追殺</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li><li><a href="https://www.ettoday.net/news/20261121/3276239.htm" target="_blank" rel="noopener noreferrer">盧秀燕曝影片受到市民道謝 籲勇敢投票、抗議執政黨霸凌</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li><li><a href="https://www.ettoday.net/news/20261121/3276238.htm" target="_blank" rel="noopener noreferrer">決戰黃金週！直搗陳素月本命區 藍營大咖全出動力挺魏平政</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li><li><a href="https://www.ettoday.net/news/20261121/3276249.htm" target="_blank" rel="noopener noreferrer">觀察／柯、蔣牽手高舉、3萬人齊聚 選戰最後關頭北市藍白合聚攏</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li><li><a href="https://www.ettoday.net/news/20261121/3276267.htm" target="_blank" rel="noopener noreferrer">選前造勢不一樣！謝美英辦音樂同樂會 張琪等藝人接力開唱</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li><li><a href="https://tw.news.yahoo.com/%E9%AB%98%E8%99%B9%E5%AE%89-%E9%BB%83%E9%87%91%E4%B9%8B%E5%A4%9C-%E8%B7%A8%E9%BB%A8%E6%B4%BE%E8%81%AF%E7%9B%9F%E5%A4%A7%E6%9C%83%E5%B8%AB-%E9%80%BE5000%E5%AE%89%E7%B2%89%E9%BD%8A%E8%81%9A%E5%A4%A9%E5%85%AC%E5%A3%87%E5%85%AC%E5%9C%92%E6%B0%A3%E5%8B%A2%E5%A6%82%E8%99%B9-173046137.html" target="_blank" rel="noopener noreferrer">高虹安「黃金之夜」跨黨派聯盟大會師 逾5000安粉齊聚天公壇公園氣勢如虹</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T01:30:46+08:00">11/22 01:30</time></div></li><li><a href="https://tw.news.yahoo.com/%E8%94%A3%E8%90%AC%E5%AE%89%E5%9C%A8%E6%B0%91%E7%9C%BE%E9%BB%A8%E9%80%A0%E5%8B%A2%E5%A4%A7%E6%9C%83%E8%88%87%E6%9F%AF%E6%96%87%E5%93%B2%E5%90%88%E9%AB%94-%E6%9F%AF%E8%A6%81%E9%80%81%E8%94%A3-%E9%87%91%E5%89%9B%E7%B6%93-%E7%A0%B4%E6%B4%8B%E6%B5%81%E5%B9%BB%E8%B1%A1-165000546.html" target="_blank" rel="noopener noreferrer">蔣萬安在民眾黨造勢大會與柯文哲合體 柯要送蔣《金剛經》破洋流幻象</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T00:50:00+08:00">11/22 00:50</time></div></li><li><a href="https://tw.news.yahoo.com/%E5%8F%B0%E5%8C%97%E5%B8%82%E9%95%B7%E9%81%B8%E8%AA%B0-%E6%9F%AF%E6%96%87%E5%93%B2%E6%84%8F%E6%9C%89%E6%89%80%E6%8C%87-%E8%B5%B7%E7%A2%BC%E9%81%B8%E5%80%8B%E6%AD%A3%E5%B8%B8%E5%96%84%E8%89%AF%E7%9A%84%E4%BA%BA-%E4%B8%8D%E8%A6%81%E6%89%BE%E6%90%9E%E8%AA%8D%E7%9F%A5%E4%BD%9C%E6%88%B0-%E5%A4%A7%E7%BD%B7%E5%85%8D%E7%9A%84-164000266.html" target="_blank" rel="noopener noreferrer">台北市長選誰？柯文哲意有所指：起碼選個正常善良的人，不要找搞認知作戰、大罷免的</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T00:40:00+08:00">11/22 00:40</time></div></li><li><a href="https://news.ltn.com.tw/news/politics/breakingnews/5648987" target="_blank" rel="noopener noreferrer">白營合體車掃沿途冷清 直播小編竟拋「這句話」挨轟</a><div class="meta">LTN · <time datetime="2026-11-22T00:30:51+08:00">11/22 00:30</time></div></li><li><a href="https://tw.news.yahoo.com/%E6%B0%91%E7%9C%BE%E9%BB%A8%E7%8B%82%E5%96%8A%E5%87%BA%E9%96%80%E6%8A%95%E7%A5%A8-%E4%B8%8B%E7%A7%92-%E5%8F%B0%E4%B8%8B1%E5%B9%95%E7%9C%9F%E5%AF%A6%E9%81%AD%E6%94%BE%E9%80%81-%E4%B8%BB%E6%8C%81%E4%BA%BA%E6%80%A5%E6%8E%A7%E5%A0%B4-125741183.html" target="_blank" rel="noopener noreferrer">民眾黨狂喊出門投票！下秒「台下1幕真實遭放送」主持人急控場</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T00:14:33+08:00">11/22 00:14</time></div></li><li><a href="https://tw.news.yahoo.com/%E6%B0%91%E7%9C%BE%E9%BB%A8%E9%80%A0%E5%8B%A2%E5%96%8A%E7%A0%B43%E8%90%AC%E4%BA%BA-%E4%B8%8B%E7%A7%92%E9%81%AD%E5%88%87%E7%A9%BA%E6%8B%8D-%E7%88%86%E5%87%BA%E7%9C%9F%E5%AF%A6%E4%BA%BA%E9%A0%AD-%E5%85%A8%E6%92%AD%E5%87%BA-143511973.html" target="_blank" rel="noopener noreferrer">民眾黨造勢喊破3萬人！下秒遭切空拍「爆出真實人頭」全播出</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T00:14:20+08:00">11/22 00:14</time></div></li><li><a href="https://tw.news.yahoo.com/%E7%9B%A7%E7%A7%80%E7%87%95%E6%8F%AD%E9%81%B8%E8%88%89-%E6%B2%89%E9%BB%98-%E6%94%9C%E6%89%8B%E6%B1%9F%E5%95%9F%E8%87%A3-%E5%90%B3%E5%AD%90%E5%98%89%E7%B1%B2%E9%81%B8%E6%B0%91%E7%84%A1%E6%87%BC%E5%87%BA%E5%BE%81%E5%8B%87%E6%95%A2%E6%8A%95%E7%A5%A8-160738628.html" target="_blank" rel="noopener noreferrer">盧秀燕揭選舉「沉默」 攜手江啟臣、吳子嘉籲選民無懼出征勇敢投票</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T00:07:38+08:00">11/22 00:07</time></div></li></ol></details>
+      </article>
+      <article data-category="財經">
+        <div class="meta"><span class="tag">02 · 財經</span><span>Yahoo TW</span><time datetime="2026-11-22T01:07:00+08:00">11/22 01:07</time></div>
+        <h2>台股重挫，台積電跌破2,000元</h2>
+        <p>評分 6.59 · 2 篇今日報導 · 1 個來源</p>
+        <a href="https://tw.news.yahoo.com/%E8%BC%9D%E9%81%94%E6%9A%B4%E8%B7%8C14-%E5%8F%B0%E6%8C%87%E6%9C%9F%E5%A4%9C%E7%9B%A4%E8%B7%B3%E6%B0%B41881%E9%BB%9E-%E9%80%B1-%E6%96%B7%E9%A0%AD%E6%BD%AE%E6%80%8E%E9%BA%BC%E8%BE%A6-%E5%B0%88%E5%AE%B6%E6%9B%9D%E7%9C%8B2%E8%A8%8A%E8%99%9F-170700095.html" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>2 篇今日報導 · 展開列表</summary><ol><li><a href="https://tw.news.yahoo.com/%E8%BC%9D%E9%81%94%E6%9A%B4%E8%B7%8C14-%E5%8F%B0%E6%8C%87%E6%9C%9F%E5%A4%9C%E7%9B%A4%E8%B7%B3%E6%B0%B41881%E9%BB%9E-%E9%80%B1-%E6%96%B7%E9%A0%AD%E6%BD%AE%E6%80%8E%E9%BA%BC%E8%BE%A6-%E5%B0%88%E5%AE%B6%E6%9B%9D%E7%9C%8B2%E8%A8%8A%E8%99%9F-170700095.html" target="_blank" rel="noopener noreferrer">輝達暴跌14%！台指期夜盤跳水1881點 週一斷頭潮怎麼辦？專家曝看2訊號</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T01:07:00+08:00">11/22 01:07</time></div></li><li><a href="https://tw.news.yahoo.com/%E5%8F%B0%E8%82%A1%E5%86%8D-%E6%B3%A2%E6%AE%BA%E7%9B%A4-6462%E6%88%B6%E8%9E%8D%E8%B3%87%E8%A2%AB%E8%BF%BD%E7%B9%B3-%E5%B0%88%E5%AE%B6%E6%9B%9D%E4%B8%8B%E5%91%A8%E4%B8%89%E6%81%90%E7%88%86-%E6%96%B7%E9%A0%AD%E8%B3%A3%E5%A3%93-161625520.html" target="_blank" rel="noopener noreferrer">台股再一波殺盤？6462戶融資被追繳 專家曝下周三恐爆「斷頭賣壓」</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T00:16:25+08:00">11/22 00:16</time></div></li></ol></details>
+      </article>
+      <article data-category="財經">
+        <div class="meta"><span class="tag">03 · 財經</span><span>Yahoo TW</span><time datetime="2026-11-22T01:57:14+08:00">11/22 01:57</time></div>
+        <h2>金管會祭五項穩市措施並全面限空</h2>
+        <p>評分 6.32 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://tw.news.yahoo.com/%E9%87%91%E7%AE%A1%E6%9C%8311-23%E8%B5%B7%E7%A5%AD%E5%85%A8%E9%9D%A2%E5%B9%B3%E7%9B%A4%E4%B8%8B%E7%A6%81%E7%A9%BA%E4%BB%A45%E6%8E%AA%E6%96%BD-175714036.html" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://tw.news.yahoo.com/%E9%87%91%E7%AE%A1%E6%9C%8311-23%E8%B5%B7%E7%A5%AD%E5%85%A8%E9%9D%A2%E5%B9%B3%E7%9B%A4%E4%B8%8B%E7%A6%81%E7%A9%BA%E4%BB%A45%E6%8E%AA%E6%96%BD-175714036.html" target="_blank" rel="noopener noreferrer">金管會11/23起祭全面平盤下禁空令5措施</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T01:57:14+08:00">11/22 01:57</time></div></li></ol></details>
+      </article>
+      <article data-category="體育">
+        <div class="meta"><span class="tag">04 · 體育</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>台鋼雄鷹與捷克隊舉行棒球交流賽</h2>
+        <p>評分 6.28 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://sports.ettoday.net/news/3276244" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://sports.ettoday.net/news/3276244" target="_blank" rel="noopener noreferrer">張育成送球棒力挺捷克12強！ 主帥喊「小國家、大夢想」盼創歷史</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="國際">
+        <div class="meta"><span class="tag">05 · 國際</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>美中俄峰會實質進展有限</h2>
+        <p>評分 6.16 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://forum.ettoday.net/news/3276237" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://forum.ettoday.net/news/3276237" target="_blank" rel="noopener noreferrer">從上海到深圳 APEC折射兩岸關係的變與不變</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="財經">
+        <div class="meta"><span class="tag">06 · 財經</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>國安基金證實進場護盤台股</h2>
+        <p>評分 5.97 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://finance.ettoday.net/news/3276125" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://finance.ettoday.net/news/3276125" target="_blank" rel="noopener noreferrer">國安基金已護盤！學者憂銀彈 立委反問「5塊錢怎救千元？」</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="生活">
+        <div class="meta"><span class="tag">07 · 生活</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>冷氣團影響，局部低溫下探10度</h2>
+        <p>評分 5.89 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://www.ettoday.net/news/20261121/3276269.htm" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://www.ettoday.net/news/20261121/3276269.htm" target="_blank" rel="noopener noreferrer">快訊／2縣市低溫特報！ 急凍跌破10度</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="財經">
+        <div class="meta"><span class="tag">08 · 財經</span><span>Yahoo TW</span><time datetime="2026-11-22T01:34:30+08:00">11/22 01:34</time></div>
+        <h2>輝達股價重挫連跌七週創金融危機後紀錄</h2>
+        <p>評分 5.87 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://tw.news.yahoo.com/%E8%BC%9D%E9%81%94%E8%B2%A1%E5%A0%B1%E4%BA%AE%E7%9C%BC%E4%B9%9F%E6%95%91%E4%B8%8D%E4%BA%86-%E9%99%B3%E9%B3%B3%E9%A6%A8%E6%8F%ADai-%E9%87%8F%E5%8C%96%E7%B7%8A%E7%B8%AE-%E5%8D%B1%E6%A9%9F-%E9%80%993%E4%BB%B6%E4%BA%8B%E6%9C%80%E5%82%B7%E5%8F%B0%E5%BB%A0-173430023.html" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://tw.news.yahoo.com/%E8%BC%9D%E9%81%94%E8%B2%A1%E5%A0%B1%E4%BA%AE%E7%9C%BC%E4%B9%9F%E6%95%91%E4%B8%8D%E4%BA%86-%E9%99%B3%E9%B3%B3%E9%A6%A8%E6%8F%ADai-%E9%87%8F%E5%8C%96%E7%B7%8A%E7%B8%AE-%E5%8D%B1%E6%A9%9F-%E9%80%993%E4%BB%B6%E4%BA%8B%E6%9C%80%E5%82%B7%E5%8F%B0%E5%BB%A0-173430023.html" target="_blank" rel="noopener noreferrer">輝達財報亮眼也救不了？陳鳳馨揭AI「量化緊縮」危機 這3件事最傷台廠</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T01:34:30+08:00">11/22 01:34</time></div></li></ol></details>
+      </article>
+      <article data-category="社會">
+        <div class="meta"><span class="tag">09 · 社會</span><span>LTN</span><time datetime="2026-11-22T00:06:07+08:00">11/22 00:06</time></div>
+        <h2>夏莉絲幼兒園案家長陳情北市續辦調解</h2>
+        <p>評分 5.73 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://news.ltn.com.tw/news/politics/breakingnews/5648726" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://news.ltn.com.tw/news/politics/breakingnews/5648726" target="_blank" rel="noopener noreferrer">為孩子討公道比選舉重要！吳思瑤怒轟蔣萬安：不只昏庸還冷血</a><div class="meta">LTN · <time datetime="2026-11-22T00:06:07+08:00">11/22 00:06</time></div></li></ol></details>
+      </article>
+      <article data-category="政治">
+        <div class="meta"><span class="tag">10 · 政治</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>民進黨候選人跨縣市助選造勢</h2>
+        <p>評分 5.70 · 4 篇今日報導 · 1 個來源</p>
+        <a href="https://www.ettoday.net/news/20261121/3276250.htm" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>4 篇今日報導 · 展開列表</summary><ol><li><a href="https://www.ettoday.net/news/20261121/3276250.htm" target="_blank" rel="noopener noreferrer">張善政黃金週造勢 籲支持者1128出門投票</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li><li><a href="https://www.ettoday.net/news/20261121/3276265.htm" target="_blank" rel="noopener noreferrer">張善政黃金週造勢湧入3.5萬人 邱奕勝：期待選票再創新高</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li><li><a href="https://www.ettoday.net/news/20261121/3276266.htm" target="_blank" rel="noopener noreferrer">首投族到青農、里長齊發聲 分享張善政四年施政有感</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li><li><a href="https://www.ettoday.net/news/20261122/3276270.htm" target="_blank" rel="noopener noreferrer">三任前桃園縣長加趙少康站台 同為張善政黃金週造勢催票</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="政治">
+        <div class="meta"><span class="tag">11 · 政治</span><span>Yahoo TW</span><time datetime="2026-11-22T00:13:45+08:00">11/22 00:13</time></div>
+        <h2>沈伯洋提公務員四大承諾引北市府反擊</h2>
+        <p>評分 5.59 · 2 篇今日報導 · 1 個來源</p>
+        <a href="https://tw.news.yahoo.com/%E9%99%B3%E6%B2%82%E6%89%B9%E6%B2%88%E4%BC%AF%E6%B4%8B%E8%AB%87%E6%94%BF%E8%A6%8B-%E5%BB%A2%E8%A9%B1%E9%80%A3%E7%AF%87-%E9%85%B8%E7%95%B6%E5%B8%82%E9%95%B7%E6%81%90%E5%AE%B3%E5%85%AC%E5%8B%99%E5%93%A1%E9%81%8E%E5%8B%9E-161345065.html" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>2 篇今日報導 · 展開列表</summary><ol><li><a href="https://tw.news.yahoo.com/%E9%99%B3%E6%B2%82%E6%89%B9%E6%B2%88%E4%BC%AF%E6%B4%8B%E8%AB%87%E6%94%BF%E8%A6%8B-%E5%BB%A2%E8%A9%B1%E9%80%A3%E7%AF%87-%E9%85%B8%E7%95%B6%E5%B8%82%E9%95%B7%E6%81%90%E5%AE%B3%E5%85%AC%E5%8B%99%E5%93%A1%E9%81%8E%E5%8B%9E-161345065.html" target="_blank" rel="noopener noreferrer">陳沂批沈伯洋談政見「廢話連篇」！酸當市長恐害公務員過勞</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T00:13:45+08:00">11/22 00:13</time></div></li><li><a href="https://tw.news.yahoo.com/%E8%B3%B4%E5%A3%AB%E8%91%86%E4%B8%8A%E5%8F%B0-%E7%AA%81%E9%96%8B%E7%BD%B5%E6%B2%88%E4%BC%AF%E6%B4%8B%E4%BA%BAx-%E4%BB%96%E5%82%AC-%E8%97%8D%E7%99%BD%E5%90%88-%E6%9F%AF%E6%96%87%E5%93%B2%E7%A5%9E%E6%83%85%E8%A2%AB%E6%8B%8D-133551139.html" target="_blank" rel="noopener noreferrer">賴士葆上台「突開罵沈伯洋人X」！他催「藍白合」柯文哲神情被拍</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T00:12:33+08:00">11/22 00:12</time></div></li></ol></details>
+      </article>
+      <article data-category="財經">
+        <div class="meta"><span class="tag">12 · 財經</span><span>Yahoo TW</span><time datetime="2026-11-22T02:06:37+08:00">11/22 02:06</time></div>
+        <h2>6076億追加預算三讀 油電凍漲成焦點</h2>
+        <p>評分 5.56 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://tw.news.yahoo.com/%E7%AB%8B%E9%99%A2%E4%B8%89%E8%AE%80%E5%8F%B0%E9%9B%BB%E7%8D%B2%E6%92%A5%E8%A3%9C711%E5%84%84-%E8%82%AF%E5%AE%9A%E5%8F%B0%E9%9B%BB%E5%87%8D%E6%BC%B2%E7%A9%A9%E5%AE%9A%E7%89%A9%E5%83%B9-180637977.html" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://tw.news.yahoo.com/%E7%AB%8B%E9%99%A2%E4%B8%89%E8%AE%80%E5%8F%B0%E9%9B%BB%E7%8D%B2%E6%92%A5%E8%A3%9C711%E5%84%84-%E8%82%AF%E5%AE%9A%E5%8F%B0%E9%9B%BB%E5%87%8D%E6%BC%B2%E7%A9%A9%E5%AE%9A%E7%89%A9%E5%83%B9-180637977.html" target="_blank" rel="noopener noreferrer">立院三讀台電獲撥補711億 肯定台電凍漲穩定物價</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T02:06:37+08:00">11/22 02:06</time></div></li></ol></details>
+      </article>
+      <article data-category="娛樂">
+        <div class="meta"><span class="tag">13 · 娛樂</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>BTS柾國分享高雄日常影片引關注</h2>
+        <p>評分 5.40 · 3 篇今日報導 · 1 個來源</p>
+        <a href="https://star.ettoday.net/news/3276246" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>3 篇今日報導 · 展開列表</summary><ol><li><a href="https://star.ettoday.net/news/3276246" target="_blank" rel="noopener noreferrer">直擊／防彈RM「狂喝6杯珍奶」臉都腫了 柾國再讚「這美食」：好吃</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li><li><a href="https://star.ettoday.net/news/3276253" target="_blank" rel="noopener noreferrer">直擊／BTS V苦練中文！狂求推薦好物「價格不限」Jimin一旁偷笑</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li><li><a href="https://star.ettoday.net/news/3276261" target="_blank" rel="noopener noreferrer">BTS唱完秒開直播中文連發！柾國豪邁狂吃秀超壯背肌 讚台粉1舉動</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="政治">
+        <div class="meta"><span class="tag">14 · 政治</span><span>Yahoo TW</span><time datetime="2026-11-22T01:50:15+08:00">11/22 01:50</time></div>
+        <h2>老農津貼提高至1.5萬元 卓榮泰不副署</h2>
+        <p>評分 5.40 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://tw.news.yahoo.com/%E7%9B%A3%E9%99%A2%E7%8C%B6%E5%9C%A8-%E7%AB%8B%E9%99%A2%E5%85%88%E6%AD%BB-%E6%94%BF%E9%99%A2%E5%8D%81%E6%AC%A1%E4%B8%8D%E5%89%AF%E7%BD%B2-%E8%80%81%E8%BE%B2%E6%B4%A5%E8%B2%BC%E6%B2%92%E4%BA%86-175015991.html" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://tw.news.yahoo.com/%E7%9B%A3%E9%99%A2%E7%8C%B6%E5%9C%A8-%E7%AB%8B%E9%99%A2%E5%85%88%E6%AD%BB-%E6%94%BF%E9%99%A2%E5%8D%81%E6%AC%A1%E4%B8%8D%E5%89%AF%E7%BD%B2-%E8%80%81%E8%BE%B2%E6%B4%A5%E8%B2%BC%E6%B2%92%E4%BA%86-175015991.html" target="_blank" rel="noopener noreferrer">監院猶在 立院先死 政院十次不副署 老農津貼沒了</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T01:50:15+08:00">11/22 01:50</time></div></li></ol></details>
+      </article>
+      <article data-category="政治">
+        <div class="meta"><span class="tag">15 · 政治</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>江啟臣台中山城造勢籲支持者催票</h2>
+        <p>評分 5.25 · 2 篇今日報導 · 2 個來源</p>
+        <a href="https://www.ettoday.net/news/20261121/3276263.htm" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>2 篇今日報導 · 展開列表</summary><ol><li><a href="https://www.ettoday.net/news/20261121/3276263.htm" target="_blank" rel="noopener noreferrer">選前黃金週！江啟臣批政策反覆延宕9年、籲站出來守護中道力量</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li><li><a href="https://tw.news.yahoo.com/%E6%B1%9F%E5%95%9F%E8%87%A3%E6%9A%A2%E8%AB%87%E5%8F%B0%E4%B8%AD%E6%9C%AA%E4%BE%86%E8%97%8D%E5%9C%96-%E4%B8%BB%E6%89%93-%E5%B9%B8%E7%A6%8F%E6%97%97%E8%89%A6%E5%9F%8E-%E8%88%87ai%E7%94%A2%E6%A5%AD%E5%8D%87%E7%B4%9A-161559493.html" target="_blank" rel="noopener noreferrer">江啟臣暢談台中未來藍圖 主打「幸福旗艦城」與AI產業升級</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T00:15:59+08:00">11/22 00:15</time></div></li></ol></details>
+      </article>
+      <article data-category="娛樂">
+        <div class="meta"><span class="tag">16 · 娛樂</span><span>Yahoo TW</span><time datetime="2026-11-22T01:11:35+08:00">11/22 01:11</time></div>
+        <h2>金馬入圍者出席論壇分享表演經驗</h2>
+        <p>評分 5.13 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://tw.news.yahoo.com/%E9%87%91%E9%A6%AC63%E7%9C%8B%E9%BB%9E-%E8%88%92%E6%B7%87-%E8%88%92%E8%8F%AF%E7%B4%85%E6%AF%AF%E9%AC%A5%E8%B1%94-%E6%9D%8E%E5%AE%89%E9%99%AA%E5%A5%89%E4%BF%8A%E6%98%8A%E9%A0%92%E7%8D%8E-171135667.html" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://tw.news.yahoo.com/%E9%87%91%E9%A6%AC63%E7%9C%8B%E9%BB%9E-%E8%88%92%E6%B7%87-%E8%88%92%E8%8F%AF%E7%B4%85%E6%AF%AF%E9%AC%A5%E8%B1%94-%E6%9D%8E%E5%AE%89%E9%99%AA%E5%A5%89%E4%BF%8A%E6%98%8A%E9%A0%92%E7%8D%8E-171135667.html" target="_blank" rel="noopener noreferrer">金馬63看點｜舒淇、舒華紅毯鬥豔 李安陪奉俊昊頒獎</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T01:11:35+08:00">11/22 01:11</time></div></li></ol></details>
+      </article>
+      <article data-category="政治">
+        <div class="meta"><span class="tag">17 · 政治</span><span>Yahoo TW</span><time datetime="2026-11-22T00:04:20+08:00">11/22 00:04</time></div>
+        <h2>陸委會稱「美不支持台獨」報導非事實</h2>
+        <p>評分 4.97 · 2 篇今日報導 · 2 個來源</p>
+        <a href="https://tw.news.yahoo.com/%E7%8D%A8%E5%AE%B6-t%E9%96%8B%E9%A0%AD%E7%9A%84%E5%9C%8B%E5%AE%B6-%E5%BD%B1%E9%9F%BF%E7%BE%8E%E4%B8%AD%E9%97%9C%E4%BF%82-%E6%9E%97%E4%BD%B3%E9%BE%8D%E9%BB%9E%E5%90%8D%E9%A6%AC%E6%96%AF%E5%85%8B-%E5%8F%B0%E7%81%A3%E4%B8%8D%E6%98%AF%E5%A4%A7%E5%9C%8B%E4%BA%A4%E6%98%93%E7%9A%84%E7%B1%8C%E7%A2%BC-160420081.html" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>2 篇今日報導 · 展開列表</summary><ol><li><a href="https://tw.news.yahoo.com/%E7%8D%A8%E5%AE%B6-t%E9%96%8B%E9%A0%AD%E7%9A%84%E5%9C%8B%E5%AE%B6-%E5%BD%B1%E9%9F%BF%E7%BE%8E%E4%B8%AD%E9%97%9C%E4%BF%82-%E6%9E%97%E4%BD%B3%E9%BE%8D%E9%BB%9E%E5%90%8D%E9%A6%AC%E6%96%AF%E5%85%8B-%E5%8F%B0%E7%81%A3%E4%B8%8D%E6%98%AF%E5%A4%A7%E5%9C%8B%E4%BA%A4%E6%98%93%E7%9A%84%E7%B1%8C%E7%A2%BC-160420081.html" target="_blank" rel="noopener noreferrer">獨家》「T開頭的國家」影響美中關係? 林佳龍點名馬斯克：台灣不是大國交易的籌碼</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T00:04:20+08:00">11/22 00:04</time></div></li><li><a href="https://news.ltn.com.tw/news/politics/breakingnews/5649074" target="_blank" rel="noopener noreferrer">獨家》「T開頭的國家」影響美中關係? 林佳龍點名馬斯克：台灣不是大國交易的籌碼</a><div class="meta">LTN · <time datetime="2026-11-22T00:04:20+08:00">11/22 00:04</time></div></li></ol></details>
+      </article>
+      <article data-category="社會">
+        <div class="meta"><span class="tag">18 · 社會</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>台鐵清潔人員陳屍宿舍 死因待查</h2>
+        <p>評分 4.82 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://www.ettoday.net/news/20261121/3276234.htm" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://www.ettoday.net/news/20261121/3276234.htm" target="_blank" rel="noopener noreferrer">清潔員工陳屍宿舍內 台鐵：死因及經過待釐清</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="科技">
+        <div class="meta"><span class="tag">19 · 科技</span><span>Yahoo TW</span><time datetime="2026-11-22T01:50:21+08:00">11/22 01:50</time></div>
+        <h2>Anthropic上市首日漲後回落</h2>
+        <p>評分 4.57 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://tw.news.yahoo.com/%E7%BE%8E%E8%82%A1%E9%BB%91%E8%89%B2%E6%98%9F%E6%9C%9F%E4%BA%94-%E8%BC%9D%E9%81%94-%E5%A4%A9%E8%92%B8%E7%99%BC4910%E5%84%84%E7%BE%8E%E5%85%83-%E9%82%A3%E6%96%AF%E9%81%94%E5%85%8B%E5%90%90%E5%85%89%E5%85%A8%E5%B9%B4%E6%BC%B2%E5%B9%85-%E8%8F%AF%E7%88%BE%E8%A1%97%E5%9A%87%E5%A3%9E-175021596.html" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://tw.news.yahoo.com/%E7%BE%8E%E8%82%A1%E9%BB%91%E8%89%B2%E6%98%9F%E6%9C%9F%E4%BA%94-%E8%BC%9D%E9%81%94-%E5%A4%A9%E8%92%B8%E7%99%BC4910%E5%84%84%E7%BE%8E%E5%85%83-%E9%82%A3%E6%96%AF%E9%81%94%E5%85%8B%E5%90%90%E5%85%89%E5%85%A8%E5%B9%B4%E6%BC%B2%E5%B9%85-%E8%8F%AF%E7%88%BE%E8%A1%97%E5%9A%87%E5%A3%9E-175021596.html" target="_blank" rel="noopener noreferrer">美股黑色星期五！輝達一天蒸發4910億美元、那斯達克吐光全年漲幅 華爾街嚇壞：先賣再說</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T01:50:21+08:00">11/22 01:50</time></div></li></ol></details>
+      </article>
+      <article data-category="娛樂">
+        <div class="meta"><span class="tag">20 · 娛樂</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>福士蒼汰來台出席金馬閉幕片活動</h2>
+        <p>評分 4.49 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://star.ettoday.net/news/3276189" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://star.ettoday.net/news/3276189" target="_blank" rel="noopener noreferrer">福士蒼汰登金馬！合體謝盈萱頒獎 大讚：聽說她是台灣的天海祐希</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="體育">
+        <div class="meta"><span class="tag">21 · 體育</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>海神107比90擊敗夢想家</h2>
+        <p>評分 4.49 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://sports.ettoday.net/news/3276173" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://sports.ettoday.net/news/3276173" target="_blank" rel="noopener noreferrer">海神終結對夢想家跨季6連敗還穩居龍頭 主帥賽後卻有話說</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="體育">
+        <div class="meta"><span class="tag">22 · 體育</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>日本冬季聯盟沖繩開打 台灣5名球員參賽</h2>
+        <p>評分 4.34 · 2 篇今日報導 · 1 個來源</p>
+        <a href="https://sports.ettoday.net/news/3276172" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>2 篇今日報導 · 展開列表</summary><ol><li><a href="https://sports.ettoday.net/news/3276172" target="_blank" rel="noopener noreferrer">日本冬盟亮點曝！DeNA投手、前白襪2A好手參戰 奧地利隊也來了</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li><li><a href="https://sports.ettoday.net/news/3276264" target="_blank" rel="noopener noreferrer">為不被看見的球員帶來光芒！沖繩冬盟雙軌制 40球團球探尋找新星</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="政治">
+        <div class="meta"><span class="tag">23 · 政治</span><span>Yahoo TW</span><time datetime="2026-11-22T01:44:10+08:00">11/22 01:44</time></div>
+        <h2>徐欣瑩助理涉散布不雅影像遭調查</h2>
+        <p>評分 4.33 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://tw.news.yahoo.com/%E7%B6%A0%E9%8C%A6%E8%A1%A3%E8%A1%9B%E5%87%BA%E5%8B%95-%E5%8F%B8%E6%B3%95%E5%AF%B8%E6%96%B7-%E6%8A%95%E7%A5%A8%E5%89%8D%E5%91%A8-%E6%98%8E%E9%A1%AF%E4%BB%8B%E5%85%A5%E9%81%B8%E8%88%89-174410880.html" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://tw.news.yahoo.com/%E7%B6%A0%E9%8C%A6%E8%A1%A3%E8%A1%9B%E5%87%BA%E5%8B%95-%E5%8F%B8%E6%B3%95%E5%AF%B8%E6%96%B7-%E6%8A%95%E7%A5%A8%E5%89%8D%E5%91%A8-%E6%98%8E%E9%A1%AF%E4%BB%8B%E5%85%A5%E9%81%B8%E8%88%89-174410880.html" target="_blank" rel="noopener noreferrer">綠錦衣衛出動 司法寸斷 投票前周 明顯介入選舉</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T01:44:10+08:00">11/22 01:44</time></div></li></ol></details>
+      </article>
+      <article data-category="社會">
+        <div class="meta"><span class="tag">24 · 社會</span><span>Yahoo TW</span><time datetime="2026-11-22T00:18:59+08:00">11/22 00:18</time></div>
+        <h2>台中36醬嘉年華草悟道登場 推主題地圖虛實整合</h2>
+        <p>評分 4.24 · 2 篇今日報導 · 2 個來源</p>
+        <a href="https://tw.news.yahoo.com/%E4%B8%8D%E5%8F%AA%E5%A4%AA%E9%99%BD%E9%A4%85-%E7%B5%90%E5%90%88%E5%9C%A8%E5%9C%B0%E5%93%81%E7%89%8C-%E5%B7%A5%E7%AD%96%E6%9C%83%E6%8E%A8-%E5%8F%B0%E4%B8%AD36%E9%86%AC-161859851.html" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>2 篇今日報導 · 展開列表</summary><ol><li><a href="https://tw.news.yahoo.com/%E4%B8%8D%E5%8F%AA%E5%A4%AA%E9%99%BD%E9%A4%85-%E7%B5%90%E5%90%88%E5%9C%A8%E5%9C%B0%E5%93%81%E7%89%8C-%E5%B7%A5%E7%AD%96%E6%9C%83%E6%8E%A8-%E5%8F%B0%E4%B8%AD36%E9%86%AC-161859851.html" target="_blank" rel="noopener noreferrer">不只太陽餅！結合在地品牌 工策會推「台中36醬」</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T00:18:59+08:00">11/22 00:18</time></div></li><li><a href="https://news.ltn.com.tw/news/life/breakingnews/5649006" target="_blank" rel="noopener noreferrer">不只太陽餅！結合在地品牌 工策會推「台中36醬」</a><div class="meta">LTN · <time datetime="2026-11-22T00:18:59+08:00">11/22 00:18</time></div></li></ol></details>
+      </article>
+      <article data-category="政治">
+        <div class="meta"><span class="tag">25 · 政治</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>賴清德力挺何欣純，助選台中市長選戰</h2>
+        <p>評分 4.21 · 6 篇今日報導 · 2 個來源</p>
+        <a href="https://www.ettoday.net/news/20261121/3276230.htm" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>6 篇今日報導 · 展開列表</summary><ol><li><a href="https://www.ettoday.net/news/20261121/3276230.htm" target="_blank" rel="noopener noreferrer">不批評對手、惡意攻擊 蘇巧慧：喜歡「洋流慧聚」代表認同新價值</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li><li><a href="https://www.ettoday.net/news/20261121/3276231.htm" target="_blank" rel="noopener noreferrer">賴清德談沈伯洋蘇巧慧參選3意義 嗨喊「1128我們一起跳舞好不好！」</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li><li><a href="https://www.ettoday.net/news/20261121/3276236.htm" target="_blank" rel="noopener noreferrer">期待蘇巧慧帶動萬里觀光發展 賴清德：我是新北孩子不要把我忘了耶</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li><li><a href="https://www.ettoday.net/news/20261121/3276243.htm" target="_blank" rel="noopener noreferrer">正副總統連2天站台 蕭美琴送何欣純工程帽...台中建設全面啟動</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li><li><a href="https://tw.news.yahoo.com/%E8%B3%B4%E6%B8%85%E5%BE%B7%E5%97%A8%E5%96%8A%E5%8F%B0%E5%8C%97%E6%96%B0%E5%8C%97%E9%9B%99%E8%B4%8F-%E6%9C%80%E5%BE%8C-%E5%93%A9%E8%B7%AF%E8%A6%81%E9%98%B2-%E4%B8%AD%E5%9C%8B%E4%BB%8B%E9%81%B8-163438411.html" target="_blank" rel="noopener noreferrer">賴清德嗨喊台北新北雙贏！最後一哩路要防「中國介選」</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T00:34:38+08:00">11/22 00:34</time></div></li><li><a href="https://tw.news.yahoo.com/%E6%B2%88%E4%BC%AF%E6%B4%8B%E5%8F%B0%E4%B8%8A%E9%96%8B%E6%88%B0%E8%98%87%E5%B7%A7%E6%85%A7-%E5%96%8A%E5%87%BA4%E5%AD%97-%E6%9C%AC%E4%BA%BA%E7%A7%92%E7%94%A91%E5%A4%A7%E6%8B%9B%E5%8F%8D%E5%88%B6-133449529.html" target="_blank" rel="noopener noreferrer">沈伯洋台上開戰蘇巧慧「喊出4字」！本人秒甩1大招反制</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T00:11:31+08:00">11/22 00:11</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">26 · 其他</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>韓國瑜形容雲嘉像「武當派」 挺張啓楷小蝦米戰大鯨魚</h2>
+        <p>評分 3.94 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://www.ettoday.net/news/20261121/3276251.htm" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://www.ettoday.net/news/20261121/3276251.htm" target="_blank" rel="noopener noreferrer">藍白大咖齊聚挺張啓楷 韓國瑜喊當嘉義市「第一號推銷員」</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">27 · 其他</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>讓世界看見輔大！亞太天主教大學運動會實踐在地國際化</h2>
+        <p>評分 3.94 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://sports.ettoday.net/news/3276260" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://sports.ettoday.net/news/3276260" target="_blank" rel="noopener noreferrer">首屆亞太天主教大學運動會22日開幕！9國700名好手齊聚台灣</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="國際">
+        <div class="meta"><span class="tag">28 · 國際</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>華為余承東「開車可以睡覺」言論惹議 隨後改口專心開車</h2>
+        <p>評分 3.94 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://speed.ettoday.net/news/3276254" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://speed.ettoday.net/news/3276254" target="_blank" rel="noopener noreferrer">華為常董稱「開車可以睡覺」遭炎上！1hr後微博發文改口：要專心</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="體育">
+        <div class="meta"><span class="tag">29 · 體育</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>出征世界身障棒球賽 台灣隊朱廣霖：打出感動比賽</h2>
+        <p>評分 3.94 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://sports.ettoday.net/news/3276262" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://sports.ettoday.net/news/3276262" target="_blank" rel="noopener noreferrer">台灣身障棒球止跨屆5連敗！全文彥完投6K奪首勝 5個月愛女幸運星</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="社會">
+        <div class="meta"><span class="tag">30 · 社會</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>中壢轎車撞入寶雅騎樓釀一死六傷</h2>
+        <p>評分 3.94 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://www.ettoday.net/news/20261121/3276268.htm" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://www.ettoday.net/news/20261121/3276268.htm" target="_blank" rel="noopener noreferrer">桃園毒駕男爆撞釀1死6傷！法官裁定收押 列國民法庭審理</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">31 · 其他</span><span>Yahoo TW</span><time datetime="2026-11-22T00:13:52+08:00">11/22 00:13</time></div>
+        <h2>夸父追日跨夜接力賽金門站登場 800跑者挑戰太武山接力至后湖</h2>
+        <p>評分 3.83 · 2 篇今日報導 · 2 個來源</p>
+        <a href="https://tw.news.yahoo.com/%E5%A4%B8%E7%88%B6%E8%BF%BD%E6%97%A5-%E8%B7%A8%E5%A4%9C%E6%8E%A5%E5%8A%9B%E8%B3%BD%E9%87%91%E9%96%80%E7%AB%99%E7%86%B1%E8%A1%80%E7%99%BB%E5%A0%B4-%E4%BB%8A%E5%A4%A9%E5%87%BA%E7%99%BC-%E6%98%8E%E5%A4%A9%E8%A6%8B%E5%9B%89-161352240.html" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>2 篇今日報導 · 展開列表</summary><ol><li><a href="https://tw.news.yahoo.com/%E5%A4%B8%E7%88%B6%E8%BF%BD%E6%97%A5-%E8%B7%A8%E5%A4%9C%E6%8E%A5%E5%8A%9B%E8%B3%BD%E9%87%91%E9%96%80%E7%AB%99%E7%86%B1%E8%A1%80%E7%99%BB%E5%A0%B4-%E4%BB%8A%E5%A4%A9%E5%87%BA%E7%99%BC-%E6%98%8E%E5%A4%A9%E8%A6%8B%E5%9B%89-161352240.html" target="_blank" rel="noopener noreferrer">「夸父追日」跨夜接力賽金門站熱血登場 今天出發「明天見囉」</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T00:13:52+08:00">11/22 00:13</time></div></li><li><a href="https://news.ltn.com.tw/news/life/breakingnews/5649099" target="_blank" rel="noopener noreferrer">「夸父追日」跨夜接力賽金門站熱血登場 今天出發「明天見囉」</a><div class="meta">LTN · <time datetime="2026-11-22T00:13:52+08:00">11/22 00:13</time></div></li></ol></details>
+      </article>
+      <article data-category="政治">
+        <div class="meta"><span class="tag">32 · 政治</span><span>Yahoo TW</span><time datetime="2026-11-22T00:10:37+08:00">11/22 00:10</time></div>
+        <h2>曝過去一個月「臉上都沒笑容」 秦慧珠今辦感恩晚會 這原因笑了</h2>
+        <p>評分 3.83 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://tw.news.yahoo.com/%E7%BE%85%E6%B7%91%E8%95%BE%E6%BB%BF%E9%A0%AD%E7%99%BD%E9%AB%AE%E7%8F%BE%E8%BA%AB-%E6%8C%BA%E7%A7%A6%E6%85%A7%E7%8F%A0-%E7%AA%81%E7%88%86%E9%A9%9A%E4%BA%BA%E5%85%A7%E5%B9%95-%E9%96%8B%E7%A0%B2%E9%80%99%E4%BA%BA-%E5%95%83%E5%9C%8B%E6%B0%91%E9%BB%A8%E7%9A%84%E9%AA%A8-135524618.html" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://tw.news.yahoo.com/%E7%BE%85%E6%B7%91%E8%95%BE%E6%BB%BF%E9%A0%AD%E7%99%BD%E9%AB%AE%E7%8F%BE%E8%BA%AB-%E6%8C%BA%E7%A7%A6%E6%85%A7%E7%8F%A0-%E7%AA%81%E7%88%86%E9%A9%9A%E4%BA%BA%E5%85%A7%E5%B9%95-%E9%96%8B%E7%A0%B2%E9%80%99%E4%BA%BA-%E5%95%83%E5%9C%8B%E6%B0%91%E9%BB%A8%E7%9A%84%E9%AA%A8-135524618.html" target="_blank" rel="noopener noreferrer">羅淑蕾滿頭白髮現身！挺秦慧珠「突爆驚人內幕」開砲這人：啃國民黨的骨</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T00:10:37+08:00">11/22 00:10</time></div></li></ol></details>
+      </article>
+      <article data-category="政治">
+        <div class="meta"><span class="tag">33 · 政治</span><span>Yahoo TW</span><time datetime="2026-11-22T00:08:56+08:00">11/22 00:08</time></div>
+        <h2>呼籲軍人子弟、軍眷支持童子瑋 季連成將軍：勇敢的站出來</h2>
+        <p>評分 3.83 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://tw.news.yahoo.com/%E5%AE%8B%E6%A5%9A%E7%91%9C%E9%81%B8%E5%89%8D%E9%9C%87%E6%92%BC%E8%A1%A8%E6%85%8B-%E5%8A%9B%E6%8C%BA%E9%80%99%E4%BD%8D-%E7%B6%A0%E7%87%9F%E5%B8%82%E9%95%B7%E5%80%99%E9%81%B8%E4%BA%BA-%E9%A9%9A%E6%8F%AD26%E5%B9%B4%E5%89%8D%E6%81%A9%E6%83%85-%E6%97%A5%E5%BE%8C%E5%BF%85%E6%88%90%E5%A4%A7%E5%99%A8-063822705.html" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://tw.news.yahoo.com/%E5%AE%8B%E6%A5%9A%E7%91%9C%E9%81%B8%E5%89%8D%E9%9C%87%E6%92%BC%E8%A1%A8%E6%85%8B-%E5%8A%9B%E6%8C%BA%E9%80%99%E4%BD%8D-%E7%B6%A0%E7%87%9F%E5%B8%82%E9%95%B7%E5%80%99%E9%81%B8%E4%BA%BA-%E9%A9%9A%E6%8F%AD26%E5%B9%B4%E5%89%8D%E6%81%A9%E6%83%85-%E6%97%A5%E5%BE%8C%E5%BF%85%E6%88%90%E5%A4%A7%E5%99%A8-063822705.html" target="_blank" rel="noopener noreferrer">宋楚瑜選前震撼表態！力挺這位「綠營市長候選人」驚揭26年前恩情：日後必成大器</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T00:08:56+08:00">11/22 00:08</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">34 · 其他</span><span>Yahoo TW</span><time datetime="2026-11-22T00:01:38+08:00">11/22 00:01</time></div>
+        <h2>CRAVITY宣布明年1月10日台北開唱 九位成員合體與LUVITY相見</h2>
+        <p>評分 3.82 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://tw.news.yahoo.com/babymonster-%E5%B0%8F%E5%B7%A8%E8%9B%8B%E5%A4%96%E8%A8%AD%E5%AE%B6%E9%95%B7%E7%AD%89%E5%80%99%E5%8D%80-ahyeon%E5%97%93%E5%AD%90%E4%B8%8D%E9%81%A9%E6%83%B9%E5%BF%83%E7%96%BC-%E6%88%91%E7%9B%A1%E5%8A%9B%E4%BA%86-160138542.html" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://tw.news.yahoo.com/babymonster-%E5%B0%8F%E5%B7%A8%E8%9B%8B%E5%A4%96%E8%A8%AD%E5%AE%B6%E9%95%B7%E7%AD%89%E5%80%99%E5%8D%80-ahyeon%E5%97%93%E5%AD%90%E4%B8%8D%E9%81%A9%E6%83%B9%E5%BF%83%E7%96%BC-%E6%88%91%E7%9B%A1%E5%8A%9B%E4%BA%86-160138542.html" target="_blank" rel="noopener noreferrer">「BABYMONSTER」小巨蛋外設家長等候區 Ahyeon嗓子不適惹心疼：我盡力了</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T00:01:38+08:00">11/22 00:01</time></div></li></ol></details>
+      </article>
+      <article data-category="娛樂">
+        <div class="meta"><span class="tag">35 · 娛樂</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>動感女星告白！認了當年才8歲…范逸臣反應曝光</h2>
+        <p>評分 3.42 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://star.ettoday.net/news/3276256" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://star.ettoday.net/news/3276256" target="_blank" rel="noopener noreferrer">她8歲看《海角七號》愛上范逸臣 18年後圓夢同台腿軟：很嚇到</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">36 · 其他</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>獨／沈伯洋造勢無人機爆用陸製晶片 獲民進黨政府標案補助破4億</h2>
+        <p>評分 3.42 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://www.ettoday.net/news/20261121/3276174.htm" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://www.ettoday.net/news/20261121/3276174.htm" target="_blank" rel="noopener noreferrer">獨／沈伯洋造勢無人機爆用陸製晶片 獲民進黨政府標案補助破4億</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="體育">
+        <div class="meta"><span class="tag">37 · 體育</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>PLG》樂於跟車侑城分享經驗 克羅馬大讚：他極具天賦</h2>
+        <p>評分 3.42 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://sports.ettoday.net/news/3276242" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://sports.ettoday.net/news/3276242" target="_blank" rel="noopener noreferrer">車侑城替補繳亮眼數據！克羅馬樂當導師讚：他只會越來越強</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="體育">
+        <div class="meta"><span class="tag">38 · 體育</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>民俗運動匯演》紅髮曹子宏享受扯鈴樂趣 古家姊妹晉全國決賽</h2>
+        <p>評分 3.42 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://sports.ettoday.net/news/3276255" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://sports.ettoday.net/news/3276255" target="_blank" rel="noopener noreferrer">頂著幸運紅髮晉級！扯鈴世界冠軍曹子宏：樂見有人比我強</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="體育">
+        <div class="meta"><span class="tag">39 · 體育</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>PLG》高國豪沒被家務事影響拿24分卻做白工 勇士痛宰獵鷹收3連勝</h2>
+        <p>評分 3.42 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://sports.ettoday.net/news/3276245" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://sports.ettoday.net/news/3276245" target="_blank" rel="noopener noreferrer">讓高國豪攻下24分！勇士教練蔡文誠坦言防守策略給了他空間</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="體育">
+        <div class="meta"><span class="tag">40 · 體育</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>關懷盃》弟弟張士綸人氣太旺搶走風采！張政禹自嘲當陪襯 笑稱「旁邊有韓星」</h2>
+        <p>評分 3.42 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://sports.ettoday.net/news/3276259" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://sports.ettoday.net/news/3276259" target="_blank" rel="noopener noreferrer">張家兄弟超人氣！張政禹笑張士綸人氣更旺 林智勝點名接班理事長</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">41 · 其他</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>衛冕軍松山首戰就開無雙轟122分宰成功 三重、基商聯手演下剋上</h2>
+        <p>評分 3.42 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://sports.ettoday.net/news/3276257" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://sports.ettoday.net/news/3276257" target="_blank" rel="noopener noreferrer">HBL松山、光復連勝攜手進12強！高苑奪勝保住「南台灣希望」</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">42 · 其他</span><span>LTN</span><time datetime="2026-11-22T01:45:06+08:00">11/22 01:45</time></div>
+        <h2>墨西哥逮捕FBI十大通緝毒梟 當地爆槍戰與暴力事件</h2>
+        <p>評分 3.39 · 2 篇今日報導 · 2 個來源</p>
+        <a href="https://news.ltn.com.tw/news/world/breakingnews/5649165" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>2 篇今日報導 · 展開列表</summary><ol><li><a href="https://news.ltn.com.tw/news/world/breakingnews/5649165" target="_blank" rel="noopener noreferrer">墨西哥逮捕FBI十大通緝毒梟 當地爆槍戰與暴力事件</a><div class="meta">LTN · <time datetime="2026-11-22T01:45:06+08:00">11/22 01:45</time></div></li><li><a href="https://tw.news.yahoo.com/%E5%A2%A8%E8%A5%BF%E5%93%A5%E9%80%AE%E6%8D%95fbi%E5%8D%81%E5%A4%A7%E9%80%9A%E7%B7%9D%E6%AF%92%E6%A2%9F-%E7%95%B6%E5%9C%B0%E7%88%86%E6%A7%8D%E6%88%B0%E8%88%87%E6%9A%B4%E5%8A%9B%E4%BA%8B%E4%BB%B6-173528556.html" target="_blank" rel="noopener noreferrer">墨西哥逮捕FBI十大通緝毒梟 當地爆槍戰與暴力事件</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T01:35:28+08:00">11/22 01:35</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">43 · 其他</span><span>Yahoo TW</span><time datetime="2026-11-22T01:08:00+08:00">11/22 01:08</time></div>
+        <h2>繼父逼18歲養女「肉償換上網」 庭上亮鐵證養女竟是小三案情大逆轉</h2>
+        <p>評分 3.36 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://tw.news.yahoo.com/%E9%8C%AF%E6%8A%8A%E5%9B%9A%E7%A6%81%E7%95%B6%E7%9C%9F%E6%84%9B-%E9%A4%8A%E5%A5%B3%E6%83%85%E6%9B%B8%E5%96%9A%E4%BB%96-%E8%A6%AA%E6%84%9B%E7%9A%84%E8%80%81%E5%85%AC-%E5%AD%BD%E7%B7%A3%E6%9B%9D%E5%85%89%E7%B9%BC%E7%88%B6%E4%BB%8D%E5%88%A4%E5%88%91-170800364.html" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://tw.news.yahoo.com/%E9%8C%AF%E6%8A%8A%E5%9B%9A%E7%A6%81%E7%95%B6%E7%9C%9F%E6%84%9B-%E9%A4%8A%E5%A5%B3%E6%83%85%E6%9B%B8%E5%96%9A%E4%BB%96-%E8%A6%AA%E6%84%9B%E7%9A%84%E8%80%81%E5%85%AC-%E5%AD%BD%E7%B7%A3%E6%9B%9D%E5%85%89%E7%B9%BC%E7%88%B6%E4%BB%8D%E5%88%A4%E5%88%91-170800364.html" target="_blank" rel="noopener noreferrer">錯把囚禁當真愛！養女情書喚他「親愛的老公」孽緣曝光繼父仍判刑</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T01:08:00+08:00">11/22 01:08</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">44 · 其他</span><span>Yahoo TW</span><time datetime="2026-11-22T00:44:08+08:00">11/22 00:44</time></div>
+        <h2>高雄岡山國小校長遭解職惹議！家長、教師明赴市府陳抗 控政治干預</h2>
+        <p>評分 3.34 · 2 篇今日報導 · 2 個來源</p>
+        <a href="https://tw.news.yahoo.com/%E9%AB%98%E9%9B%84%E5%B2%A1%E5%B1%B1%E5%9C%8B%E5%B0%8F%E6%A0%A1%E9%95%B7%E9%81%AD%E8%A7%A3%E8%81%B7%E6%83%B9%E8%AD%B0-%E5%AE%B6%E9%95%B7-%E6%95%99%E5%B8%AB%E6%98%8E%E8%B5%B4%E5%B8%82%E5%BA%9C%E9%99%B3%E6%8A%97-%E6%8E%A7%E6%94%BF%E6%B2%BB%E5%B9%B2%E9%A0%90-164408728.html" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>2 篇今日報導 · 展開列表</summary><ol><li><a href="https://tw.news.yahoo.com/%E9%AB%98%E9%9B%84%E5%B2%A1%E5%B1%B1%E5%9C%8B%E5%B0%8F%E6%A0%A1%E9%95%B7%E9%81%AD%E8%A7%A3%E8%81%B7%E6%83%B9%E8%AD%B0-%E5%AE%B6%E9%95%B7-%E6%95%99%E5%B8%AB%E6%98%8E%E8%B5%B4%E5%B8%82%E5%BA%9C%E9%99%B3%E6%8A%97-%E6%8E%A7%E6%94%BF%E6%B2%BB%E5%B9%B2%E9%A0%90-164408728.html" target="_blank" rel="noopener noreferrer">高雄岡山國小校長遭解職惹議！家長、教師明赴市府陳抗 控政治干預</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T00:44:08+08:00">11/22 00:44</time></div></li><li><a href="https://news.ltn.com.tw/news/life/breakingnews/5649161" target="_blank" rel="noopener noreferrer">高雄岡山國小校長遭解職惹議！家長、教師明赴市府陳抗 控政治干預</a><div class="meta">LTN · <time datetime="2026-11-22T00:44:08+08:00">11/22 00:44</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">45 · 其他</span><span>Yahoo TW</span><time datetime="2026-11-22T00:19:17+08:00">11/22 00:19</time></div>
+        <h2>營造台江環村綠道 小公民寫論文為家鄉發聲</h2>
+        <p>評分 3.32 · 2 篇今日報導 · 2 個來源</p>
+        <a href="https://tw.news.yahoo.com/%E7%87%9F%E9%80%A0%E5%8F%B0%E6%B1%9F%E7%92%B0%E6%9D%91%E7%B6%A0%E9%81%93-%E5%B0%8F%E5%85%AC%E6%B0%91%E5%AF%AB%E8%AB%96%E6%96%87%E7%82%BA%E5%AE%B6%E9%84%89%E7%99%BC%E8%81%B2-161917466.html" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>2 篇今日報導 · 展開列表</summary><ol><li><a href="https://tw.news.yahoo.com/%E7%87%9F%E9%80%A0%E5%8F%B0%E6%B1%9F%E7%92%B0%E6%9D%91%E7%B6%A0%E9%81%93-%E5%B0%8F%E5%85%AC%E6%B0%91%E5%AF%AB%E8%AB%96%E6%96%87%E7%82%BA%E5%AE%B6%E9%84%89%E7%99%BC%E8%81%B2-161917466.html" target="_blank" rel="noopener noreferrer">營造台江環村綠道 小公民寫論文為家鄉發聲</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T00:19:17+08:00">11/22 00:19</time></div></li><li><a href="https://news.ltn.com.tw/news/life/breakingnews/5648975" target="_blank" rel="noopener noreferrer">營造台江環村綠道 小公民寫論文為家鄉發聲</a><div class="meta">LTN · <time datetime="2026-11-22T00:19:17+08:00">11/22 00:19</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">46 · 其他</span><span>Google News TW</span><time datetime="2026-11-22T00:06:34+08:00">11/22 00:06</time></div>
+        <h2>280 萬人基因分析揭阿茲海默症新線索，48 個風險區域首度現身</h2>
+        <p>評分 2.98 · 2 篇今日報導 · 2 個來源</p>
+        <a href="https://news.google.com/rss/articles/CBMirgFBVV95cUxOb0xRanFVOXN3QTQ2X1RXalZHYk9GQUZKRVJuYWRBaC1YUEpvMkhXeXB2SVZQc0FLMGRhQ0dTeWpBWEFTUXNpZjU1c3g1ekZjeVY4LUNmVDNYMVJYMVV3Y041bWVTc2xPNEI2WUpobUljN1FxMDdFbkRPSkxXaXVQSmM3bmVHd3FHODAwOFYxOHJvbHdGcjJObUhMX2p5RVdGaW9rbHpyTms0MGhfT0E?oc=5" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>2 篇今日報導 · 展開列表</summary><ol><li><a href="https://news.google.com/rss/articles/CBMirgFBVV95cUxOb0xRanFVOXN3QTQ2X1RXalZHYk9GQUZKRVJuYWRBaC1YUEpvMkhXeXB2SVZQc0FLMGRhQ0dTeWpBWEFTUXNpZjU1c3g1ekZjeVY4LUNmVDNYMVJYMVV3Y041bWVTc2xPNEI2WUpobUljN1FxMDdFbkRPSkxXaXVQSmM3bmVHd3FHODAwOFYxOHJvbHdGcjJObUhMX2p5RVdGaW9rbHpyTms0MGhfT0E?oc=5" target="_blank" rel="noopener noreferrer">280 萬人基因分析揭阿茲海默症新線索，48 個風險區域首度現身</a><div class="meta">Google News TW · <time datetime="2026-11-22T00:06:34+08:00">11/22 00:06</time></div></li><li><a href="https://technews.tw/2026/11/22/massive-study-of-2-8-million-people-reveals-new-secrets-of-alzheimers-disease/" target="_blank" rel="noopener noreferrer">280 萬人基因分析揭阿茲海默症新線索，48 個風險區域首度現身</a><div class="meta">TechNews · <time datetime="2026-11-22T00:00:05+08:00">11/22 00:00</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">47 · 其他</span><span>PTT</span><time datetime="2026-11-22T00:22:14+08:00">11/22 00:22</time></div>
+        <h2>[MYGO] 祝高松燈生日快樂!!!發點錢</h2>
+        <p>評分 2.93 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://www.ptt.cc/bbs/C_Chat/M.1795278134.A.6AD.html" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://www.ptt.cc/bbs/C_Chat/M.1795278134.A.6AD.html" target="_blank" rel="noopener noreferrer">[MYGO] 祝高松燈生日快樂!!!發點錢</a><div class="meta">PTT · <time datetime="2026-11-22T00:22:14+08:00">11/22 00:22</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">48 · 其他</span><span>PTT</span><time datetime="2026-11-22T00:15:55+08:00">11/22 00:15</time></div>
+        <h2>[討論] 若蔣萬安還贏，洋流會被酸爆嗎？</h2>
+        <p>評分 2.89 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://www.ptt.cc/bbs/HatePolitics/M.1795277755.A.282.html" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://www.ptt.cc/bbs/HatePolitics/M.1795277755.A.282.html" target="_blank" rel="noopener noreferrer">[討論] 若蔣萬安還贏，洋流會被酸爆嗎？</a><div class="meta">PTT · <time datetime="2026-11-22T00:15:55+08:00">11/22 00:15</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">49 · 其他</span><span>PTT</span><time datetime="2026-11-22T00:21:52+08:00">11/22 00:21</time></div>
+        <h2>[討論] 陳學聖：有暗黑勢力在誤解秦慧珠</h2>
+        <p>評分 2.71 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://www.ptt.cc/bbs/HatePolitics/M.1795278112.A.080.html" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://www.ptt.cc/bbs/HatePolitics/M.1795278112.A.080.html" target="_blank" rel="noopener noreferrer">[討論] 陳學聖：有暗黑勢力在誤解秦慧珠</a><div class="meta">PTT · <time datetime="2026-11-22T00:21:52+08:00">11/22 00:21</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">50 · 其他</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>屈中恆被封「上古朴宰範」笑翻老婆！ Vicky拿對比圖一看嚇壞</h2>
+        <p>評分 2.69 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://star.ettoday.net/news/3276193" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://star.ettoday.net/news/3276193" target="_blank" rel="noopener noreferrer">屈中恆被封「上古朴宰範」笑翻老婆！ Vicky拿對比圖一看嚇壞</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">51 · 其他</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>高雄名店「拒絕7人訂位」竟是BTS！見成員現身店家傻眼了</h2>
+        <p>評分 2.69 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://www.ettoday.net/news/20261121/3276232.htm" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://www.ettoday.net/news/20261121/3276232.htm" target="_blank" rel="noopener noreferrer">高雄名店「拒絕7人訂位」竟是BTS！見成員現身店家傻眼了</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">52 · 其他</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>桃市府攜手黎明技術學院 見證桃園新住民蛻變力量</h2>
+        <p>評分 2.69 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://www.ettoday.net/news/20261121/3276161.htm" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://www.ettoday.net/news/20261121/3276161.htm" target="_blank" rel="noopener noreferrer">桃市府攜手黎明技術學院 見證桃園新住民蛻變力量</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">53 · 其他</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>陳松鉉連任台南大成國中家長會長 16位副會長、168人顧問團創紀錄</h2>
+        <p>評分 2.69 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://www.ettoday.net/news/20261121/3276241.htm" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://www.ettoday.net/news/20261121/3276241.htm" target="_blank" rel="noopener noreferrer">陳松鉉連任台南大成國中家長會長 16位副會長、168人顧問團創紀錄</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">54 · 其他</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>日女偶像買炸雞抽到自己小卡！ 「大素顏戴眼鏡」沒被認出過程曝</h2>
+        <p>評分 2.69 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://star.ettoday.net/news/3276252" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://star.ettoday.net/news/3276252" target="_blank" rel="noopener noreferrer">日女偶像買炸雞抽到自己小卡！ 「大素顏戴眼鏡」沒被認出過程曝</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">55 · 其他</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>歌仔戲演一半「外送員送餐到場」！演員蹲下接飲料…台下觀眾笑翻</h2>
+        <p>評分 2.69 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://www.ettoday.net/news/20261121/3276258.htm" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://www.ettoday.net/news/20261121/3276258.htm" target="_blank" rel="noopener noreferrer">歌仔戲演一半「外送員送餐到場」！演員蹲下接飲料…台下觀眾笑翻</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">56 · 其他</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>桃園八德交通路網再升級 德和路一段全線1.7公里通車</h2>
+        <p>評分 2.69 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://www.ettoday.net/news/20261122/3276272.htm" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://www.ettoday.net/news/20261122/3276272.htm" target="_blank" rel="noopener noreferrer">桃園八德交通路網再升級 德和路一段全線1.7公里通車</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">57 · 其他</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>雙北跨年飯店優惠整理！住房看101煙火 單日派對最低1499元</h2>
+        <p>評分 2.69 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://travel.ettoday.net/article/3275474.htm" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://travel.ettoday.net/article/3275474.htm" target="_blank" rel="noopener noreferrer">雙北跨年飯店優惠整理！住房看101煙火 單日派對最低1499元</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">58 · 其他</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>「不犯錯」就能多賺！獵鷹合約藏自律獎金、高景炎說要兼顧人性</h2>
+        <p>評分 2.69 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://sports.ettoday.net/news/3276162" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://sports.ettoday.net/news/3276162" target="_blank" rel="noopener noreferrer">「不犯錯」就能多賺！獵鷹合約藏自律獎金、高景炎說要兼顧人性</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">59 · 其他</span><span>ETtoday</span><time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div>
+        <h2>對抗日本電子島弧？ 福建艦空警-600搭殲-15DT號稱能壓制</h2>
+        <p>評分 2.69 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://www.ettoday.net/news/20261122/3273153.htm" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://www.ettoday.net/news/20261122/3273153.htm" target="_blank" rel="noopener noreferrer">對抗日本電子島弧？ 福建艦空警-600搭殲-15DT號稱能壓制</a><div class="meta">ETtoday · <time datetime="2026-11-22T02:17:40+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="財經">
+        <div class="meta"><span class="tag">60 · 財經</span><span>UDN Money</span><time datetime="2026-11-22T01:50:17+08:00">11/22 01:50</time></div>
+        <h2>隱形冠軍／鑫台科研落地驗證 引領產業轉型</h2>
+        <p>評分 2.67 · 4 篇今日報導 · 1 個來源</p>
+        <a href="https://money.udn.com/money/story/10871/9893864" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>4 篇今日報導 · 展開列表</summary><ol><li><a href="https://money.udn.com/money/story/10871/9893864" target="_blank" rel="noopener noreferrer">隱形冠軍／鑫台太陽光電結合 AI 漁電共生 養殖業藍海</a><div class="meta">UDN Money · <time datetime="2026-11-22T01:50:17+08:00">11/22 01:50</time></div></li><li><a href="https://money.udn.com/money/story/10871/9893870" target="_blank" rel="noopener noreferrer">隱形冠軍／鑫台執行長蔣坤龍果敢 砸重金拚創新</a><div class="meta">UDN Money · <time datetime="2026-11-22T01:47:08+08:00">11/22 01:47</time></div></li><li><a href="https://money.udn.com/money/story/10871/9893871" target="_blank" rel="noopener noreferrer">隱形冠軍／鑫台攜手工研院 打造示範場域</a><div class="meta">UDN Money · <time datetime="2026-11-22T01:42:12+08:00">11/22 01:42</time></div></li><li><a href="https://money.udn.com/money/story/10871/9893866" target="_blank" rel="noopener noreferrer">隱形冠軍／鑫台科研落地驗證 引領產業轉型</a><div class="meta">UDN Money · <time datetime="2026-11-22T01:41:56+08:00">11/22 01:41</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">61 · 其他</span><span>Yahoo TW</span><time datetime="2026-11-22T01:26:00+08:00">11/22 01:26</time></div>
+        <h2>外資今年賣台股快3兆 上週卻狂掃它近25萬張！</h2>
+        <p>評分 2.65 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://tw.news.yahoo.com/%E5%A4%96%E8%B3%87%E4%BB%8A%E5%B9%B4%E8%B3%A3%E5%8F%B0%E8%82%A1%E5%BF%AB3%E5%85%86-%E4%B8%8A%E9%80%B1%E5%8D%BB%E7%8B%82%E6%8E%83%E5%AE%83%E8%BF%9125%E8%90%AC%E5%BC%B5-172600858.html" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://tw.news.yahoo.com/%E5%A4%96%E8%B3%87%E4%BB%8A%E5%B9%B4%E8%B3%A3%E5%8F%B0%E8%82%A1%E5%BF%AB3%E5%85%86-%E4%B8%8A%E9%80%B1%E5%8D%BB%E7%8B%82%E6%8E%83%E5%AE%83%E8%BF%9125%E8%90%AC%E5%BC%B5-172600858.html" target="_blank" rel="noopener noreferrer">外資今年賣台股快3兆 上週卻狂掃它近25萬張！</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T01:26:00+08:00">11/22 01:26</time></div></li></ol></details>
+      </article>
+      <article data-category="國際">
+        <div class="meta"><span class="tag">62 · 國際</span><span>Google News TW World</span><time datetime="2026-11-22T01:15:37+08:00">11/22 01:15</time></div>
+        <h2>影／APEC午宴插曲！川普嗨跳YMCA畫面曝光習近平隨音樂忙著鼓掌| APEC峰會聚焦| 全球</h2>
+        <p>評分 2.64 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://news.google.com/rss/articles/CBMiU0FVX3lxTE1US0NKc2kyT3VlOWtUNnNFYURWU3dpQjhhaUN5Y2NkbVpRRHZiZFhibHZMdmRxWnV2NjRIUlZpeHdGRzE5WmloVGVXVjNKRHBOdFJV?oc=5" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://news.google.com/rss/articles/CBMiU0FVX3lxTE1US0NKc2kyT3VlOWtUNnNFYURWU3dpQjhhaUN5Y2NkbVpRRHZiZFhibHZMdmRxWnV2NjRIUlZpeHdGRzE5WmloVGVXVjNKRHBOdFJV?oc=5" target="_blank" rel="noopener noreferrer">影／APEC午宴插曲！川普嗨跳YMCA畫面曝光習近平隨音樂忙著鼓掌| APEC峰會聚焦| 全球</a><div class="meta">Google News TW World · <time datetime="2026-11-22T01:15:37+08:00">11/22 01:15</time></div></li></ol></details>
+      </article>
+      <article data-category="財經">
+        <div class="meta"><span class="tag">63 · 財經</span><span>UDN Money</span><time datetime="2026-11-22T00:54:08+08:00">11/22 00:54</time></div>
+        <h2>台中工具機展 180 廠商上秀 串聯產業上下游、學研資源</h2>
+        <p>評分 2.62 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://money.udn.com/money/story/5612/9893873" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://money.udn.com/money/story/5612/9893873" target="_blank" rel="noopener noreferrer">台中工具機展 180 廠商上秀 串聯產業上下游、學研資源</a><div class="meta">UDN Money · <time datetime="2026-11-22T00:54:08+08:00">11/22 00:54</time></div></li></ol></details>
+      </article>
+      <article data-category="財經">
+        <div class="meta"><span class="tag">64 · 財經</span><span>UDN Money</span><time datetime="2026-11-22T00:51:41+08:00">11/22 00:51</time></div>
+        <h2>晶華11月24日攜 LV 點亮耶誕樹 為歲末節慶揭開序幕</h2>
+        <p>評分 2.61 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://money.udn.com/money/story/5612/9893875" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://money.udn.com/money/story/5612/9893875" target="_blank" rel="noopener noreferrer">晶華11月24日攜 LV 點亮耶誕樹 為歲末節慶揭開序幕</a><div class="meta">UDN Money · <time datetime="2026-11-22T00:51:41+08:00">11/22 00:51</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">65 · 其他</span><span>LTN</span><time datetime="2026-11-22T00:33:24+08:00">11/22 00:33</time></div>
+        <h2>打造最接地氣防災片！彰化防火短影音競賽登場AI科技神助攻</h2>
+        <p>評分 2.60 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://news.ltn.com.tw/news/society/breakingnews/5648917" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://news.ltn.com.tw/news/society/breakingnews/5648917" target="_blank" rel="noopener noreferrer">打造最接地氣防災片！彰化防火短影音競賽登場AI科技神助攻</a><div class="meta">LTN · <time datetime="2026-11-22T00:33:24+08:00">11/22 00:33</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">66 · 其他</span><span>LTN</span><time datetime="2026-11-22T00:33:00+08:00">11/22 00:33</time></div>
+        <h2>衰神退散～小雪水氣滅旺火！ 廖翊樺：3生肖迎大運、3生肖防背刺</h2>
+        <p>評分 2.60 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://ent.ltn.com.tw/news/breakingnews/5649146" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://ent.ltn.com.tw/news/breakingnews/5649146" target="_blank" rel="noopener noreferrer">小雪到！11月華麗收官 雨揚點名3生肖大贏家</a><div class="meta">LTN · <time datetime="2026-11-22T00:33:00+08:00">11/22 00:33</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">67 · 其他</span><span>LTN</span><time datetime="2026-11-22T00:29:28+08:00">11/22 00:29</time></div>
+        <h2>公私協力陪伴保護個案 屏縣戴如玎、黃淑玲獲衛福部紫絲帶獎</h2>
+        <p>評分 2.60 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://news.ltn.com.tw/news/life/breakingnews/5648924" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://news.ltn.com.tw/news/life/breakingnews/5648924" target="_blank" rel="noopener noreferrer">公私協力陪伴保護個案 屏縣戴如玎、黃淑玲獲衛福部紫絲帶獎</a><div class="meta">LTN · <time datetime="2026-11-22T00:29:28+08:00">11/22 00:29</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">68 · 其他</span><span>LTN</span><time datetime="2026-11-22T00:24:04+08:00">11/22 00:24</time></div>
+        <h2>高雄城市盃龍舟賽蓮池潭熱血開划 120隊好手競速較勁</h2>
+        <p>評分 2.59 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://news.ltn.com.tw/news/life/breakingnews/5649018" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://news.ltn.com.tw/news/life/breakingnews/5649018" target="_blank" rel="noopener noreferrer">高雄城市盃龍舟賽蓮池潭熱血開划 120隊好手競速較勁</a><div class="meta">LTN · <time datetime="2026-11-22T00:24:04+08:00">11/22 00:24</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">69 · 其他</span><span>Yahoo TW</span><time datetime="2026-11-22T00:17:00+08:00">11/22 00:17</time></div>
+        <h2>苗栗縣社區大學成果發表 鍾東錦鼓勵鄉親多參與讓自己生活變更多采多姿</h2>
+        <p>評分 2.58 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://tw.news.yahoo.com/%E8%8B%97%E6%A0%97%E7%B8%A3%E7%A4%BE%E5%8D%80%E5%A4%A7%E5%AD%B8%E6%88%90%E6%9E%9C%E7%99%BC%E8%A1%A8-%E9%8D%BE%E6%9D%B1%E9%8C%A6%E9%BC%93%E5%8B%B5%E9%84%89%E8%A6%AA%E5%A4%9A%E5%8F%83%E8%88%87%E8%AE%93%E8%87%AA%E5%B7%B1%E7%94%9F%E6%B4%BB%E8%AE%8A%E6%9B%B4%E5%A4%9A%E9%87%87%E5%A4%9A%E5%A7%BF-161700961.html" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://tw.news.yahoo.com/%E8%8B%97%E6%A0%97%E7%B8%A3%E7%A4%BE%E5%8D%80%E5%A4%A7%E5%AD%B8%E6%88%90%E6%9E%9C%E7%99%BC%E8%A1%A8-%E9%8D%BE%E6%9D%B1%E9%8C%A6%E9%BC%93%E5%8B%B5%E9%84%89%E8%A6%AA%E5%A4%9A%E5%8F%83%E8%88%87%E8%AE%93%E8%87%AA%E5%B7%B1%E7%94%9F%E6%B4%BB%E8%AE%8A%E6%9B%B4%E5%A4%9A%E9%87%87%E5%A4%9A%E5%A7%BF-161700961.html" target="_blank" rel="noopener noreferrer">苗栗縣社區大學成果發表 鍾東錦鼓勵鄉親多參與讓自己生活變更多采多姿</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T00:17:00+08:00">11/22 00:17</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">70 · 其他</span><span>Google News TW</span><time datetime="2026-11-22T00:14:20+08:00">11/22 00:14</time></div>
+        <h2>民眾黨造勢喊破3萬人！下秒遭切空拍「爆出真實人頭」全播出</h2>
+        <p>評分 2.58 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://news.google.com/rss/articles/CBMi-AJBVV95cUxOOE1SVnNqUE9VSzU4c1cxQzA3RE5ScGVudXppSDVISzJMVW1fSF9ZakYzNldkTmlGZFlCZlVXMHFHZ1I0blZyUE13U1NtRDJQakQ0TDQyYngtWm1ScWxZdmUwVGg3S29qVzZnMlQtc01IazUtNTFMMjQ5RWFoc0tKSUg4cTlaeFRzQkIwNVhhUER0enVoNEgtY0pMTW1PcXhCVDZJWHdoSHRFVFhrXzlNUFJscV9IcnJfY09vM3VUQ0lKMG93bTlNb2NfSzR5a0tURUdJaHZDN3FpVVRjX19VSW1uYWZnaUhUWlE1NmFjWnVfd25CRXFMa0w5aUlsOGtmQlNGcUJNSVd4WHZfclZzbHVlM0dRXy16NXFMM2R3WTZOc2g1cFpULXpteGZtYWlYVTFuS3ZaMnlIQ25Ka3JoWmNKRHhSb0FmRy01T3Z0SHlRa0xRZG8tVUlqZ2FHUm9NNnhRanA5NHBtY2dwQU1id3owa1BIZDRu?oc=5" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://news.google.com/rss/articles/CBMi-AJBVV95cUxOOE1SVnNqUE9VSzU4c1cxQzA3RE5ScGVudXppSDVISzJMVW1fSF9ZakYzNldkTmlGZFlCZlVXMHFHZ1I0blZyUE13U1NtRDJQakQ0TDQyYngtWm1ScWxZdmUwVGg3S29qVzZnMlQtc01IazUtNTFMMjQ5RWFoc0tKSUg4cTlaeFRzQkIwNVhhUER0enVoNEgtY0pMTW1PcXhCVDZJWHdoSHRFVFhrXzlNUFJscV9IcnJfY09vM3VUQ0lKMG93bTlNb2NfSzR5a0tURUdJaHZDN3FpVVRjX19VSW1uYWZnaUhUWlE1NmFjWnVfd25CRXFMa0w5aUlsOGtmQlNGcUJNSVd4WHZfclZzbHVlM0dRXy16NXFMM2R3WTZOc2g1cFpULXpteGZtYWlYVTFuS3ZaMnlIQ25Ka3JoWmNKRHhSb0FmRy01T3Z0SHlRa0xRZG8tVUlqZ2FHUm9NNnhRanA5NHBtY2dwQU1id3owa1BIZDRu?oc=5" target="_blank" rel="noopener noreferrer">民眾黨造勢喊破3萬人！下秒遭切空拍「爆出真實人頭」全播出</a><div class="meta">Google News TW · <time datetime="2026-11-22T00:14:20+08:00">11/22 00:14</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">71 · 其他</span><span>Yahoo TW</span><time datetime="2026-11-22T00:10:00+08:00">11/22 00:10</time></div>
+        <h2>12星座本周運勢〈11.22~11.28〉</h2>
+        <p>評分 2.58 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://tw.news.yahoo.com/12%E6%98%9F%E5%BA%A7%E6%9C%AC%E5%91%A8%E9%81%8B%E5%8B%A2-11-22-11-28-161000478.html" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://tw.news.yahoo.com/12%E6%98%9F%E5%BA%A7%E6%9C%AC%E5%91%A8%E9%81%8B%E5%8B%A2-11-22-11-28-161000478.html" target="_blank" rel="noopener noreferrer">12星座本周運勢〈11.22~11.28〉</a><div class="meta">Yahoo TW · <time datetime="2026-11-22T00:10:00+08:00">11/22 00:10</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">72 · 其他</span><span>Google News TW</span><time datetime="2026-11-22T00:00:00+08:00">11/22 00:00</time></div>
+        <h2>1666: Amsterdam十二月大型更新：鬧鬼之城擴大近一倍，搶先體驗不漲價</h2>
+        <p>評分 2.57 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://news.google.com/rss/articles/CBMiswFBVV95cUxQdUJLNXE2dmNBZ0FnUzVIVVRSWlJodTIyMk90eHVXLWxpcktuSl9tOGliRHpwLWZsdVVDQlZKS1ZjcTdqY0RvOG91WFI2YTY0VTVoYTd2eWphMzI1aG5CdV9LSXpwUVpWZWJvVjN0VXA5Zm5fdkp4ck53VkQ4Rm1XcDlKYXdVOW9KSnlYcUxfbUZDM0J3dnZLZ2k5RzNDY3djY3g2UEVqTU9IR0dUajVIT3JqZw?oc=5" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://news.google.com/rss/articles/CBMiswFBVV95cUxQdUJLNXE2dmNBZ0FnUzVIVVRSWlJodTIyMk90eHVXLWxpcktuSl9tOGliRHpwLWZsdVVDQlZKS1ZjcTdqY0RvOG91WFI2YTY0VTVoYTd2eWphMzI1aG5CdV9LSXpwUVpWZWJvVjN0VXA5Zm5fdkp4ck53VkQ4Rm1XcDlKYXdVOW9KSnlYcUxfbUZDM0J3dnZLZ2k5RzNDY3djY3g2UEVqTU9IR0dUajVIT3JqZw?oc=5" target="_blank" rel="noopener noreferrer">1666: Amsterdam十二月大型更新：鬧鬼之城擴大近一倍，搶先體驗不漲價</a><div class="meta">Google News TW · <time datetime="2026-11-22T00:00:00+08:00">11/22 00:00</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">73 · 其他</span><span>PTT</span><time datetime="2026-11-22T01:23:21+08:00">11/22 01:23</time></div>
+        <h2>[水母] 高橋李依x伊藤美來夢幻同台</h2>
+        <p>評分 2.48 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://www.ptt.cc/bbs/C_Chat/M.1795281801.A.07D.html" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://www.ptt.cc/bbs/C_Chat/M.1795281801.A.07D.html" target="_blank" rel="noopener noreferrer">[水母] 高橋李依x伊藤美來夢幻同台</a><div class="meta">PTT · <time datetime="2026-11-22T01:23:21+08:00">11/22 01:23</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">74 · 其他</span><span>PTT</span><time datetime="2026-11-22T00:28:48+08:00">11/22 00:28</time></div>
+        <h2>[討論] 韓國瑜再嗆：民進黨不是高雄人的爸爸！</h2>
+        <p>評分 2.28 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://www.ptt.cc/bbs/HatePolitics/M.1795278528.A.89D.html" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://www.ptt.cc/bbs/HatePolitics/M.1795278528.A.89D.html" target="_blank" rel="noopener noreferrer">[討論] 韓國瑜再嗆：民進黨不是高雄人的爸爸！</a><div class="meta">PTT · <time datetime="2026-11-22T00:28:48+08:00">11/22 00:28</time></div></li></ol></details>
+      </article>
+      <article data-category="其他">
+        <div class="meta"><span class="tag">75 · 其他</span><span>PTT</span><time datetime="2026-11-22T00:26:59+08:00">11/22 00:26</time></div>
+        <h2>[新聞] 蘋果傳攻 AI 代理、開發模型 可望導入終</h2>
+        <p>評分 2.18 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://www.ptt.cc/bbs/Stock/M.1795278419.A.E49.html" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://www.ptt.cc/bbs/Stock/M.1795278419.A.E49.html" target="_blank" rel="noopener noreferrer">[新聞] 蘋果傳攻 AI 代理、開發模型 可望導入終</a><div class="meta">PTT · <time datetime="2026-11-22T00:26:59+08:00">11/22 00:26</time></div></li></ol></details>
+      </article>
+      <article data-category="科技">
+        <div class="meta"><span class="tag">76 · 科技</span><span>iThome</span><time datetime="2026-11-22T02:17:56+08:00">11/22 02:17</time></div>
+        <h2>網擎策略投資微智安聯，臺灣資安業者攜手擴大產品布局、拓展海外市場</h2>
+        <p>評分 2.14 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://www.ithome.com.tw/news/180692" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://www.ithome.com.tw/news/180692" target="_blank" rel="noopener noreferrer">網擎策略投資微智安聯，臺灣資安業者攜手擴大產品布局、拓展海外市場</a><div class="meta">iThome · <time datetime="2026-11-22T02:17:56+08:00">11/22 02:17</time></div></li></ol></details>
+      </article>
+      <article data-category="科技">
+        <div class="meta"><span class="tag">77 · 科技</span><span>TechNews</span><time datetime="2026-11-22T00:00:56+08:00">11/22 00:00</time></div>
+        <h2>80 年一遇的北冕座 T 新星爆發倒數中，天文學家：幾年內很可能登場</h2>
+        <p>評分 2.02 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://technews.tw/2026/11/22/mystery-t-coronae-borealis-yet-erupt/" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://technews.tw/2026/11/22/mystery-t-coronae-borealis-yet-erupt/" target="_blank" rel="noopener noreferrer">80 年一遇的北冕座 T 新星爆發倒數中，天文學家：幾年內很可能登場</a><div class="meta">TechNews · <time datetime="2026-11-22T00:00:56+08:00">11/22 00:00</time></div></li></ol></details>
+      </article>
+      <article data-category="科技">
+        <div class="meta"><span class="tag">78 · 科技</span><span>TechNews</span><time datetime="2026-11-22T00:00:41+08:00">11/22 00:00</time></div>
+        <h2>韋伯望遠鏡捕捉仙女座罕見恆星合併，小伴星只花 7 年就被超巨星吞噬</h2>
+        <p>評分 2.02 · 1 篇今日報導 · 1 個來源</p>
+        <a href="https://technews.tw/2026/11/22/webb-telescope-captures-giant-star-swallowing-its-companion-in-andromeda-galaxy/" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+        <details><summary>1 篇今日報導 · 展開列表</summary><ol><li><a href="https://technews.tw/2026/11/22/webb-telescope-captures-giant-star-swallowing-its-companion-in-andromeda-galaxy/" target="_blank" rel="noopener noreferrer">韋伯望遠鏡捕捉仙女座罕見恆星合併，小伴星只花 7 年就被超巨星吞噬</a><div class="meta">TechNews · <time datetime="2026-11-22T00:00:41+08:00">11/22 00:00</time></div></li></ol></details>
+      </article>
+    </section>
+    <p id="empty" hidden>沒有符合的新聞，請更換分類或搜尋詞。</p>
+    <footer>新聞依 KNews2 群組評分排序；原文及著作權屬各來源。</footer>
+  </main>
+  <script>
+    const search = document.getElementById("search");
+    const buttons = [...document.querySelectorAll("[data-category]")].filter(element => element.tagName === "BUTTON");
+    const articles = [...document.querySelectorAll("article")];
+    let category = "全部";
+    function filterNews() {
+      const query = search.value.trim().toLocaleLowerCase("zh-TW");
+      let visible = 0;
+      for (const article of articles) {
+        article.hidden = !(category === "全部" || article.dataset.category === category)
+          || !article.textContent.toLocaleLowerCase("zh-TW").includes(query);
+        if (!article.hidden) visible++;
+      }
+      document.getElementById("count").textContent = `顯示 ${visible} 則新聞`;
+      document.getElementById("empty").hidden = visible !== 0;
+    }
+    for (const button of buttons) {
+      button.addEventListener("click", () => {
+        category = button.dataset.category;
+        for (const other of buttons) other.setAttribute("aria-pressed", String(other === button));
+        filterNews();
+      });
+    }
+    search.addEventListener("input", filterNews);
+  </script>
+</body>
+</html>
