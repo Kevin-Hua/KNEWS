@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KNews · 即時雨量</title>
+  <style>
+    :root { color-scheme: light; --ink: #172b37; --muted: #667985; --line: #dce5e8; --accent: #13756d; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #f5f7f7; color: var(--ink); font: 16px/1.7 system-ui, sans-serif; }
+    main { max-width: 1200px; margin: auto; padding: 28px 24px; }
+    h1 { margin-top: 0; }
+    a { color: var(--accent); text-underline-offset: 4px; }
+    form { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+    input, select, button { border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; font: inherit; }
+    input, select { min-width: 0; max-width: 100%; background: white; }
+    button { background: var(--accent); color: white; cursor: pointer; }
+    button:disabled { opacity: .5; cursor: not-allowed; }
+    :focus-visible { outline: 3px solid #dc9b22; outline-offset: 3px; }
+    .table-wrap { overflow-x: auto; background: white; border: 1px solid var(--line); border-radius: 12px; }
+    table { width: 100%; border-collapse: collapse; white-space: nowrap; }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--line); }
+    caption { text-align: left; padding: 12px; font-weight: 600; }
+    .note, footer { color: var(--muted); font-size: 14px; }
+    #status[data-error="true"] { color: #a12622; }
+    [hidden] { display: none !important; }
+    @media (max-width: 640px) { main { padding: 20px 16px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <p><a href="index.html">KNews</a></p>
+    <h1>即時雨量</h1>
+    <h2>測站代碼查詢</h2>
+    <form action="rain.html" method="get">
+      <label for="station-id">測站代碼</label>
+      <input id="station-id" name="stationID" required pattern="[A-Za-z0-9]+" autocomplete="off" placeholder="466940">
+      <button type="submit">查詢 / 更新</button>
+    </form>
+    <p class="note">網址範例：<a href="rain.html?466940">rain.html?466940</a>（基隆）；亦可使用 rain.html?stationID=466940。</p>
+    <h2>地點查詢</h2>
+    <form action="rain.html" method="get">
+      <label for="county">縣市</label>
+      <select id="county" required disabled><option value="">請選擇縣市</option></select>
+      <label for="town">鄉鎮市區</label>
+      <select id="town" required disabled><option value="">請先選擇縣市</option></select>
+      <label for="station">測站</label>
+      <select id="station" name="stationID" required disabled><option value="">請先選擇鄉鎮市區</option></select>
+      <button id="location-query" type="submit" disabled>查詢 / 更新</button>
+    </form>
+    <p class="note">依序選擇縣市、鄉鎮市區與測站，再按「查詢 / 更新」。測站清單使用靜態資料 stations.json，不隨雨量檔案變動。</p>
+    <p id="status" role="status" aria-live="polite">正在讀取雨量資料…</p>
+    <section id="result" aria-label="測站雨量" hidden>
+      <p id="fetched" class="note"></p>
+      <div class="table-wrap" role="region" aria-label="雨量資料表" tabindex="0">
+        <table>
+          <caption>累積雨量（mm）</caption>
+          <thead><tr id="headings"></tr></thead>
+          <tbody><tr id="observation"></tr></tbody>
+        </table>
+      </div>
+    </section>
+    <p class="note">資料來源：中央氣象署 O-A0002-001，由 <a href="summary.txt">summary.txt</a> 提供最新已發布資料。
+      查詢或重新載入頁面會重新讀取檔案，非直接連線氣象署；請確認觀測時間。
+      負值為氣象署特殊／缺測代碼，並非負雨量。</p>
+    <noscript><p>此頁需要啟用 JavaScript 才能查詢雨量；可直接開啟 summary.txt 查看資料。</p></noscript>
+    <footer>KNews · 雨量查詢 v0.1.4</footer>
+  </main>
+  <script>
+    (() => {
+      const input = document.getElementById("station-id");
+      const status = document.getElementById("status");
+      const result = document.getElementById("result");
+      const county = document.getElementById("county");
+      const town = document.getElementById("town");
+      const station = document.getElementById("station");
+      const locationQuery = document.getElementById("location-query");
+      let stations = [];
+      const headers = ["County", "Town", "Station", "Station ID", "Observed at",
+        "10 min", "1 hr", "3 hr", "6 hr", "12 hr", "24 hr"];
+      const query = location.search.slice(1);
+      const stationID = query.includes("=")
+        ? new URLSearchParams(query).get("stationID") || ""
+        : new URLSearchParams("stationID=" + query).get("stationID");
+      input.value = stationID;
+
+      const showError = message => {
+        result.hidden = true;
+        status.dataset.error = "true";
+        status.textContent = message;
+      };
+
+      const setOptions = (select, placeholder, options) => {
+        select.replaceChildren(new Option(placeholder, ""));
+        options.forEach(([value, label]) => select.add(new Option(label, value)));
+        select.disabled = options.length === 0;
+      };
+      const updateStations = () => {
+        const matches = stations.filter(row => row[0] === county.value && row[1] === town.value);
+        setOptions(station, town.value ? "請選擇測站" : "請先選擇鄉鎮市區",
+          matches.map(row => [row[3], row[2] + " (" + row[3] + ")"]));
+        locationQuery.disabled = true;
+      };
+      const updateTowns = () => {
+        const towns = [...new Set(stations.filter(row => row[0] === county.value).map(row => row[1]))];
+        setOptions(town, county.value ? "請選擇鄉鎮市區" : "請先選擇縣市",
+          towns.map(value => [value, value]));
+        updateStations();
+      };
+      county.addEventListener("change", updateTowns);
+      town.addEventListener("change", updateStations);
+      station.addEventListener("change", () => {
+        locationQuery.disabled = !station.value;
+      });
+
+      if (location.protocol === "file:") {
+        showError("瀏覽器無法直接讀取本機雨量檔案，請使用 HTTP(S) 開啟此頁（例如 VS Code Live Server 或 GitHub Pages）。");
+        return;
+      }
+
+      async function load() {
+        status.textContent = "正在讀取雨量資料…";
+        try {
+          const catalogResponse = await fetch("stations.json");
+          if (!catalogResponse.ok) throw new Error("讀取 stations.json 失敗（HTTP " + catalogResponse.status + "）。");
+          stations = await catalogResponse.json();
+          if (!Array.isArray(stations) || stations.length === 0 || !stations.every(row =>
+            Array.isArray(row) && row.length === 4 && row.every(value => typeof value === "string" && value !== ""))) {
+            throw new Error("靜態測站清單格式錯誤。");
+          }
+          const counties = [...new Set(stations.map(row => row[0]))];
+          setOptions(county, "請選擇縣市", counties.map(value => [value, value]));
+          if (!query) {
+            status.textContent = "請輸入測站代碼，或依縣市、鄉鎮市區選擇測站。";
+            return;
+          }
+          if (!stationID || !/^[A-Za-z0-9]+$/.test(stationID)) {
+            showError("請提供有效的測站代碼，例如 rain.html?466940。");
+            return;
+          }
+          const selected = stations.find(row => row[3] === stationID);
+          if (selected) {
+            county.value = selected[0];
+            updateTowns();
+            town.value = selected[1];
+            updateStations();
+            station.value = selected[3];
+            locationQuery.disabled = false;
+          }
+
+          const response = await fetch("summary.txt", { cache: "no-store" });
+          if (!response.ok) throw new Error("讀取 summary.txt 失敗（HTTP " + response.status + "）。");
+          const lines = (await response.text()).replace(/^\uFEFF/, "").split(/\r?\n/);
+          const headerIndex = lines.findIndex(line => line === headers.join("\t"));
+          if (headerIndex === -1) throw new Error("summary.txt 缺少預期的雨量欄位。");
+          const fetched = lines.slice(0, headerIndex).find(line => line.startsWith("Fetched: "));
+          if (!fetched) throw new Error("summary.txt 缺少資料擷取時間。");
+          const rows = lines.slice(headerIndex + 1)
+            .filter(line => line.trim())
+            .map(line => line.split("\t"));
+          if (rows.some(row => row.length !== headers.length || row.slice(0, 4).some(value => !value))) {
+            throw new Error("測站資料欄位不完整。");
+          }
+          const row = rows.find(fields => fields[3] === stationID);
+          if (!row) {
+            showError("找不到測站 " + stationID + "，請確認測站代碼。");
+            return;
+          }
+          if (!row.slice(5).every(value => value.trim() !== "" && Number.isFinite(Number(value)))) {
+            throw new Error("測站雨量資料格式錯誤。");
+          }
+          headers.forEach(header => {
+            const cell = document.createElement("th");
+            cell.scope = "col";
+            cell.textContent = header;
+            document.getElementById("headings").append(cell);
+          });
+          row.forEach((value, index) => {
+            const cell = document.createElement("td");
+            cell.textContent = index >= 5 && Number(value) < 0 ? "特殊／缺測代碼 (" + value + ")" : value;
+            document.getElementById("observation").append(cell);
+          });
+          document.getElementById("fetched").textContent = "資料擷取時間：" + fetched.slice("Fetched: ".length);
+          status.textContent = row[0] + " " + row[1] + " · " + row[2] + " (" + stationID + ")";
+          result.hidden = false;
+        } catch (error) {
+          showError(error instanceof Error ? error.message : "無法讀取雨量資料。");
+        }
+      }
+
+      load();
+    })();
+  </script>
+</body>
+</html>
