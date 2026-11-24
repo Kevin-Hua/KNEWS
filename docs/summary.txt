@@ -1,5 +1,5 @@
 CWA rainfall observations (O-A0002-001)
-Fetched: 2026-11-24T17:58:36+08:00
+Fetched: 2026-11-24T18:00:12+08:00
 Units: mm; negative values are CWA special/missing-data codes, not rainfall amounts.
 County	Town	Station	Station ID	Observed at	10 min	1 hr	3 hr	6 hr	12 hr	24 hr
 南投縣	國姓鄉	九份二山	C1I230	2026-11-24T17:50:00+08:00	0.0	0.0	2.0	2.0	2.0	2.0
